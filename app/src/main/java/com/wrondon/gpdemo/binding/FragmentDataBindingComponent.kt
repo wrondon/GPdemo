@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package com.wrondon.gpdemo
+package com.wrondon.gpdemo.binding
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingComponent
 import androidx.fragment.app.Fragment
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+/**
+ * A Data Binding Component implementation for fragments.
+ */
+class FragmentDataBindingComponent(fragment: Fragment) : DataBindingComponent {
+    private val adapter = FragmentBindingAdapters(fragment)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-    }
-
-    override fun supportFragmentInjector() = dispatchingAndroidInjector
+    override fun getFragmentBindingAdapters() = adapter
 }

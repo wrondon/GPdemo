@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package com.wrondon.gpdemo
+package com.wrondon.gpdemo.binding
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
+import com.bumptech.glide.Glide
+import com.wrondon.gpdemo.testing.OpenForTesting
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+/**
+ * Binding adapters that work with a fragment instance.
+ */
+@OpenForTesting
+class FragmentBindingAdapters @Inject constructor(val fragment: Fragment) {
+    @BindingAdapter("imageUrl")
+    fun bindImage(imageView: ImageView, url: String?) {
+        Glide.with(fragment).load(url).into(imageView)
     }
-
-    override fun supportFragmentInjector() = dispatchingAndroidInjector
 }
