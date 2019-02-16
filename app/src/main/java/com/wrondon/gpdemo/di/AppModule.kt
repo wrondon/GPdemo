@@ -18,10 +18,9 @@ package com.wrondon.gpdemo.di
 
 import android.app.Application
 import androidx.room.Room
+import com.wrondon.gpdemo.api.GPApiService
 import com.wrondon.gpdemo.api.GPDemoService
-import com.wrondon.gpdemo.db.GithubDb
-import com.wrondon.gpdemo.db.RepoDao
-import com.wrondon.gpdemo.db.UserDao
+import com.wrondon.gpdemo.db.*
 import com.wrondon.gpdemo.util.LiveDataCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -61,5 +60,23 @@ class AppModule {
     @Provides
     fun provideRepoDao(db: GithubDb): RepoDao {
         return db.repoDao()
+    }
+
+
+    @Singleton
+    @Provides
+    fun provideGPApiService(): GPApiService {
+        return Retrofit.Builder()
+            .baseUrl("https://reqres.in/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
+            .build()
+            .create(GPApiService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGPUserDao(db: GPDemoDb): GPUserDao {
+        return db.gpUserDao()
     }
 }
